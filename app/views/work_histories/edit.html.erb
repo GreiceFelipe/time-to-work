@@ -1,0 +1,13 @@
+<section class="section">
+    <div class="container column is-half">
+        <h1 class="is-size-3 is-size-4-mobile has-text-centered">Editar Ponto</h1>
+    </div>
+
+    <div class="container column is-half">
+        <%= render 'form', work_history: @work_history %>
+    </div>
+
+    <div class="container column is-one-fifth center">
+        <%= link_to 'Voltar', work_histories_path, class: "button is-fullwidth is-rounded is-outlined is-link" %>
+    </div>
+</section>

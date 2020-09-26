@@ -1,0 +1,52 @@
+<section class="section">
+    <div class="container column is-half is-mobile">
+        <h1 class="is-size-3 is-size-4-mobile has-text-centered"> <i class="far fa-calendar-check"></i> Histórico de pontos</h1>
+    </div>    
+
+    <div class="column is-mobile">
+        <div class="column is-10 is-offset-2">
+            <div class="column is-one-fifth">
+                <%= link_to 'Novo Ponto', new_work_history_path, class: "button is-fullwidth is-rounded is-outlined is-black" %>
+            </div>
+       
+
+            <br>
+
+            <div class="table-container">
+                <table class="table is-striped">
+                    <thead>
+                        <tr>
+                            <th>Entrada</th>
+                            <th>Inicio almoço</th>
+                            <th>Fim almoço</th>
+                            <th>Saída</th> 
+                            <th>Saldo Hora</th>
+                            <th colspan="1"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% total = 0.0%>
+                        <% @work_histories.each do |work_history| %>
+                            <tr>
+                                <td><%= work_history.starts_at.strftime("%d/%m/%y -  %H:%M") %></td>
+                                <td><%= work_history.lunch_starts.strftime("%d/%m/%y -  %H:%M") rescue '-' %></td>
+                                <td><%= work_history.lunch_ends.strftime("%d/%m/%y -  %H:%M") rescue '-'%></td>
+                                <td><%= work_history.ends_at.strftime("%d/%m/%y - %H:%M") rescue '-'%></td> 
+                                <td><%= work_history.worked_hours_to_time rescue '-'%></td>
+                                <td><%= link_to 'Editar', edit_work_history_path(work_history), class: "button is-fullwidth is-rounded is-outlined is-info" %></td>
+                            </tr>
+                            <% total += work_history.worked_hours %>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="container column is-half center">
+                    <p class="control center">
+                        Total: <%= Time.at(total*1.hour).utc.strftime("%H:%M") %>
+                    </p>
+            </div>
+         </div>
+    </div>
+</section>

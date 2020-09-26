@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  
+  root to: "work_histories#index"
+
+  resources :work_histories, except: [ :show, :destroy ]  
+
+  namespace :work_histories do
+    get :now
+    post :check_now
+  end
 end

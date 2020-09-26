@@ -1,0 +1,55 @@
+<section class="section">
+    <div class="container column is-half">
+        <h1 class="is-size-3 is-size-4-mobile has-text-centered">Bater Ponto Agora</h1>
+    </div>
+    <% if @work_history.nil? %>
+        <div class="notification is-danger is-light">
+            <p class="control center">
+                Não é permitido bater o ponto duas vezes ao dia
+            </p>
+        </div>
+    <% else %>
+        <div class="container column is-half">
+            
+            <% if @work_history.starts_at.blank? %>
+                <%= form_tag(work_histories_check_now_path) do %>
+                    <%= hidden_field_tag 'work_history[starts_at]', Time.now %>
+                    <div class="container column is-half center">
+                        <p class="control center">
+                            <%= submit_tag 'Entrada', class: 'button is-fullwidth is-rounded is-info' %>
+                        </p>
+                    </div>
+                <% end %>
+            <% else %>
+                <%= form_tag(work_histories_check_now_path) do %>
+                    <% if @work_history.lunch_starts.blank? %>
+                        <%= hidden_field_tag 'work_history[lunch_starts]', Time.now %>
+                        <div class="container column is-half center">
+                            <p class="control center">
+                                <%= submit_tag 'Almoço', class: 'button is-fullwidth is-rounded is-primary' %>
+                            </p>
+                        </div>
+                    <% elsif  @work_history.lunch_ends.blank? %>
+                        <%= hidden_field_tag 'work_history[lunch_ends]', Time.now %>
+                        <div class="container column is-half center">
+                            <p class="control center">
+                                <%= submit_tag 'Fim Almoço', class: 'button is-fullwidth is-rounded is-warning' %>
+                            </p>
+                        </div>
+                    <%end %>
+                <% end %>
+                <%= form_tag(work_histories_check_now_path) do %>
+                    <%= hidden_field_tag 'work_history[ends_at]', Time.now %>
+                    <div class="container column is-half center">
+                        <p class="control center">
+                            <%= submit_tag 'Saida', class: 'button is-fullwidth is-rounded is-danger' %>
+                        </p>
+                    </div>
+                <% end %>            
+            <% end %>            
+        </div>
+    <%end%>
+    <div class="container column is-one-fifth center">
+        <%= link_to 'Back', work_histories_path, class: "button is-fullwidth is-rounded is-outlined is-link" %>
+    </div>
+</section>

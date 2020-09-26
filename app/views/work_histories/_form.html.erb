@@ -1,0 +1,48 @@
+<%= form_with(model: work_history, local: true) do |form| %>
+  <% if work_history.errors.any? %>
+    <div id="error_explanation" class="notification is-danger is-light">
+      <h2><%= pluralize(work_history.errors.count, "error") %> Erros encontrados:</h2>
+
+      <ul>
+        <% work_history.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <label class="label">Entrada: </label>
+    <p class="control">
+      <%= form.datetime_field :starts_at, class: "input" %>
+    </p>
+  </div>
+
+  <div class="field">
+    <label class="label">Início almoço: </label>
+    <p class="control">
+      <%= form.datetime_field :lunch_starts, class: "input" %>
+    </p>
+  </div>
+
+  <div class="field">
+    <label class="label">Fim almoço: </label>
+    <p class="control">
+      <%= form.datetime_field :lunch_ends, class: "input" %>
+    </p>
+  </div>
+
+  <div class="field">
+    <label class="label">Saída: </label>
+    <p class="control">
+      <%= form.datetime_field :ends_at, class: "input" %>
+    </p>
+  </div>
+
+  <br/>
+  <div class="field">
+    <p class="control center">
+      <%= form.submit nil, class: 'button is-fullwidth is-rounded is-primary' %>
+    </p>
+  </div>
+<% end %>
