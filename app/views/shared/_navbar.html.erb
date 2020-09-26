@@ -5,15 +5,27 @@
         Time To Work
       </a>
 
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div id="navbarMenu" class="navbar-menu">
+    <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
+        <div class="navbar-item">
+          <div class="field is-grouped">
+            <p class="control">
+              <%= link_to work_histories_now_path, class: 'button is-success' do %>
+                <span class="icon">
+                  <i class="fas fa-plus-circle"></i>
+                </span>
+                <span>Bater ponto agora</span>
+              <% end %>
+            </p>
+          </div>
+        </div>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
