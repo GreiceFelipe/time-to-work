@@ -11,6 +11,15 @@
 
   <body>
     <%= render 'shared/navbar' %>
-    <%= yield %>
+    <div class="container">
+      <div class='row'>
+        <% if notice.present? %>
+          <div class="notification is-info is-light">
+            <p id="notice"><%= notice %></p>
+          </div>
+        <% end %>
+        <%= yield %>
+      </div>  
+    </div>  
   </body>
 </html>
