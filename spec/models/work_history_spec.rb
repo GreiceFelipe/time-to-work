@@ -33,6 +33,15 @@ RSpec.describe WorkHistory, type: :model do
         expect(work_history.lunch_ends).to eq(lunch_ends)
       end
 
+      it 'will not be default starts and ends time if ends_at < starts_at + 4.hours' do
+        work_history =  create(:work_history)
+        work_history.ends_at = work_history.starts_at + 1.hours
+        work_history.save
+
+        expect(work_history.lunch_starts).to eq(nil)
+        expect(work_history.lunch_ends).to eq(nil)
+      end
+
       it 'will be a predetermined starts and ends time for lunch' do
         work_history =  create(:work_history)
 
@@ -54,6 +63,17 @@ RSpec.describe WorkHistory, type: :model do
         work_history.save
 
         expect(work_history.worked_hours).to eq(8.0)
+      end
+    end
+
+    context 'when it already exists on the same date' do
+      it 'will be invalid' do
+        work_history =  create(:work_history)
+        work_history.ends_at = work_history.starts_at + 9.hours
+        work_history.save
+
+        work_history_2 = build(:work_history, starts_at: work_history.starts_at, user_id: work_history.user_id)
+        expect(work_history_2).not_to(be_valid)
       end
     end
   end
