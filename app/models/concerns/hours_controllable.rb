@@ -3,7 +3,7 @@ module HoursControllable
 
     def update_default_hours
         if self.ends_at.present?   
-          if self.lunch_starts.nil? && self.ends_at >= starts_at + 4.hours
+          if self.lunch_starts.nil? && self.ends_at >= starts_at + 6.hours
             self.lunch_starts = starts_at + 4.hours
           end
 
