@@ -33,6 +33,15 @@ rails db:create
 rails db:migrate
 ```
 
+### Preenchimento do banco utilizando o seed
+
+```
+rails db:seed
+```
+
+Atenção o seed só rodará caso não exista nehhum usuário no banco! 
+
+
 #### Para rodar o rspec 
 
 ```
@@ -49,5 +58,18 @@ Esse projeto está levando em considerações algumas regras de négócio:
 * Não se pode bater ou criar dois pontos no mesmo dia
 * Regras de negócio foram colocadas no consern de model
 
-Poderiam existir mais testes de features além do signin 
+Poderiam existir mais testes de features além do signin. 
+
+Usuário poderia ter mais informações que apenas o email e a senha. 
+
+Poderia existir um modo de controlar se o usuário está ou não devendo horas.
+
+Poderia existir uma paginação e filtro por data para facilitar a visualização dos pontos.
+
+Caso opte por usar o seed ou usar o dump do banco o usuário será:
+
+```
+email: 'text@exemple.com'
+senha: '123456'
+```
  
