@@ -31,7 +31,7 @@ class WorkHistoriesController < ApplicationController
   # GET /work_histories/:id/edit
   def edit; end
 
-  # PUT    /work_histories/:id
+  # PUT /work_histories/:id
   def update
     respond_to do |format|
       if @work_history.update(work_history_params)
@@ -45,7 +45,7 @@ class WorkHistoriesController < ApplicationController
   # GET /work_histories/now
   def now; end
 
-  # POST /work_histories/check_now
+  # PUT /work_histories/check_now
   def check_now
     respond_to do |format|
       if @work_history.update(work_history_params)
