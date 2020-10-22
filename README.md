@@ -1,5 +1,7 @@
 # Time to work 
 
+Mine projeto que simula um ponto de funcionários online.
+
 * Ruby version 2.6.3
 
 * Rails version 6.0.3
