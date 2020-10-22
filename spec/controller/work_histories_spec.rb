@@ -2,8 +2,8 @@
 
 require('rails_helper')
 
-RSpec.describe(WorkHistoriesController, type: :controller) do
-  describe 'as an authenticated user' do
+RSpec.describe(WorkHistoriesController, type: :controller) do # rubocop:disable Metrics/BlockLength
+  describe 'as an authenticated user' do # rubocop:disable Metrics/BlockLength
     let(:user) { create(:user) }
     let(:work_history) { create(:work_history, user: user) }
 
@@ -12,7 +12,7 @@ RSpec.describe(WorkHistoriesController, type: :controller) do
         it 'return a ok status' do
           sign_in user
           get :index
-          expect(response).to have_http_status(:ok) 
+          expect(response).to(have_http_status(:ok))
         end
       end
     end
@@ -22,7 +22,7 @@ RSpec.describe(WorkHistoriesController, type: :controller) do
         it 'return a ok status' do
           sign_in user
           get :new
-          expect(response).to have_http_status(:ok) 
+          expect(response).to(have_http_status(:ok))
         end
       end
     end
@@ -31,8 +31,8 @@ RSpec.describe(WorkHistoriesController, type: :controller) do
       context 'with successful response' do
         it 'return a created status' do
           sign_in user
-          post :create, params: { work_history: { starts_at: "2020-10-21 21:21:35 -0300" } }
-          expect(response).to have_http_status(:found) 
+          post :create, params: { work_history: { starts_at: '2020-10-21 21:21:35 -0300' } }
+          expect(response).to(have_http_status(:found))
         end
       end
     end
@@ -42,7 +42,7 @@ RSpec.describe(WorkHistoriesController, type: :controller) do
         it 'return a ok status' do
           sign_in user
           get :edit, params: { id: work_history.id }
-          expect(response).to have_http_status(:ok) 
+          expect(response).to(have_http_status(:ok))
         end
       end
     end
@@ -51,8 +51,8 @@ RSpec.describe(WorkHistoriesController, type: :controller) do
       context 'with successful response' do
         it 'return a created status' do
           sign_in user
-          put :update, params: { id: work_history.id, work_history: { starts_at: "2020-10-21 21:21:35 -0300" } }
-          expect(response).to have_http_status(:found) 
+          put :update, params: { id: work_history.id, work_history: { starts_at: '2020-10-21 21:21:35 -0300' } }
+          expect(response).to(have_http_status(:found))
         end
       end
     end
@@ -62,22 +62,19 @@ RSpec.describe(WorkHistoriesController, type: :controller) do
         it 'return a ok status' do
           sign_in user
           get :now
-          expect(response).to have_http_status(:ok) 
+          expect(response).to(have_http_status(:ok))
         end
       end
     end
 
-    describe 'PUT /work_histories/check_now' do
+    describe 'POST /work_histories/check_now' do
       context 'with successful response' do
         it 'return a found status' do
           sign_in user
-          put :check_now, params: { work_history: { starts_at: "2020-10-21 21:21:35 -0300" } }
-          expect(response).to have_http_status(:found) 
+          post :check_now, params: { work_history: { starts_at: '2020-10-21 21:21:35 -0300' } }
+          expect(response).to(have_http_status(:found))
         end
       end
     end
-    
   end
 end
-
-

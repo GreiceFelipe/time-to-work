@@ -2,6 +2,8 @@
 
 # app/controllers/work_histories_controller.rb
 class WorkHistoriesController < ApplicationController
+  include WorkHistoryNow
+
   before_action :set_work_history, only: %i[edit update]
   before_action :set_work_history_now, only: %i[now check_now]
 
@@ -45,7 +47,7 @@ class WorkHistoriesController < ApplicationController
   # GET /work_histories/now
   def now; end
 
-  # PUT /work_histories/check_now
+  # POST /work_histories/check_now
   def check_now
     respond_to do |format|
       if @work_history.update(work_history_params)
@@ -61,17 +63,6 @@ class WorkHistoriesController < ApplicationController
   # Find work history and set it to share common setup
   def set_work_history
     @work_history = WorkHistory.find_by(id: params[:id], user_id: current_user)
-  end
-
-  # Set new work history with current time
-  def set_work_history_now
-    @work_history = WorkHistory.find_by(user_id: current_user.id, starts_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
-    if @work_history.blank?
-      @work_history = WorkHistory.new
-      @work_history.user_id = current_user.id
-    elsif @work_history.ends_at.present?
-      @work_history = nil
-    end
   end
 
   # Only allow a list of trusted parameters through.

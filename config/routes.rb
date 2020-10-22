@@ -7,6 +7,6 @@ Rails.application.routes.draw do
 
   namespace :work_histories do
     get :now
-    put :check_now
+    post :check_now
   end
 end

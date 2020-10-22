@@ -37,7 +37,7 @@
                                 <td><%= link_to 'Editar', edit_work_history_path(work_history), class: "button is-fullwidth is-rounded is-outlined is-info" %></td>
                             </tr>
                             <% worked_hours = work_history.worked_hours.to_f rescue 0.0%>
-                            <% total += work_history.worked_hours %>
+                            <% total += worked_hours %>
                         <% end %>
                     </tbody>
                 </table>
