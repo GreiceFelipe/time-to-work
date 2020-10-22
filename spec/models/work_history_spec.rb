@@ -2,80 +2,72 @@
 
 require('rails_helper')
 
-RSpec.describe(WorkHistory, type: :model) do
+RSpec.describe(WorkHistory, type: :model) do # rubocop:disable Metrics/BlockLength
   describe 'Validates' do
     context 'with valid factory' do
-      let(:work_history) { build(:work_history) }
-      it { expect(work_history).to(be_valid) }
+      let(:valid_work_history) { build(:work_history) }
+      it { expect(valid_work_history).to(be_valid) }
+    end
+  end
+
+  describe 'set lunch time' do
+    let(:starts_at) { Faker::Time.forward(days: 23, period: :morning) }
+
+    context 'when ends_at is given' do
+      let(:work_history) { create(:work_history, starts_at: starts_at, ends_at: starts_at + 9.hours) }
+      let(:lunch_starts) { starts_at + 4.hours }
+      let(:lunch_ends) { lunch_starts + 1.hour }
+
+      it { expect(work_history.lunch_starts).to(eq(lunch_starts)) }
+      it { expect(work_history.lunch_ends).to(eq(lunch_ends)) }
     end
 
-    context 'when WorkHistory has no ends_at date' do
-      let(:work_history) { create(:work_history) }
-      it 'will be default lunch_starts and lunch_ends nil value' do
-        expect(work_history.lunch_starts).to(eq(nil))
-        expect(work_history.lunch_ends).to(eq(nil))
-      end
+    context 'when ends_at is not given' do
+      let(:work_history) { create(:work_history, starts_at: starts_at) }
 
-      it 'will be default worked_hours nil value' do
-        expect(work_history.worked_hours).to(eq(nil))
-      end
+      it { expect(work_history.lunch_starts).to(eq(nil)) }
+      it { expect(work_history.lunch_ends).to(eq(nil)) }
     end
 
-    context 'when WorkHistory has ends_at date' do
-      it 'will be default starts and ends time' do
-        work_history = create(:work_history)
-        work_history.ends_at = work_history.starts_at + 9.hours
-        work_history.save
+    context 'when work_history < 9 hours ' do
+      let(:random_hour) { (1..8).to_a }
+      let(:work_history) { create(:work_history, starts_at: starts_at, ends_at: starts_at + random_hour.sample.hours) }
 
-        lunch_starts = work_history.starts_at + 4.hours
-        lunch_ends = lunch_starts + 1.hour
+      it { expect(work_history.lunch_starts).to(eq(nil)) }
+      it { expect(work_history.lunch_ends).to(eq(nil)) }
+    end
+  end
 
-        expect(work_history.lunch_starts).to(eq(lunch_starts))
-        expect(work_history.lunch_ends).to(eq(lunch_ends))
+  describe 'set work time' do # rubocop:disable Metrics/BlockLength
+    let(:starts_at) { Faker::Time.forward(days: 23, period: :morning) }
+
+    context 'when work_history has lunch time' do
+      let(:random_hour) { Array(1..5).sample }
+      let(:lunch_starts) { starts_at + 4.hours }
+      let(:work_time) { 9 - random_hour }
+      let(:work_history) do
+        create(
+          :work_history,
+          starts_at: starts_at,
+          lunch_starts: lunch_starts,
+          lunch_ends: lunch_starts + random_hour.hours,
+          ends_at: starts_at + 9.hours
+        )
       end
 
-      it 'will not be default starts and ends time if ends_at < starts_at + 4.hours' do
-        work_history = create(:work_history)
-        work_history.ends_at = work_history.starts_at + 1.hours
-        work_history.save
-
-        expect(work_history.lunch_starts).to(eq(nil))
-        expect(work_history.lunch_ends).to(eq(nil))
-      end
-
-      it 'will be a predetermined starts and ends time for lunch' do
-        work_history =  create(:work_history)
-
-        lunch_starts =  work_history.starts_at + 3.hours
-        lunch_ends = lunch_starts + 1.hour
-
-        work_history.ends_at = work_history.starts_at + 9.hours
-        work_history.lunch_starts = lunch_starts
-        work_history.lunch_ends = lunch_ends
-        work_history.save
-
-        expect(work_history.lunch_starts).to(eq(lunch_starts))
-        expect(work_history.lunch_ends).to(eq(lunch_ends))
-      end
-
-      it 'will be worked_hours value' do
-        work_history = create(:work_history)
-        work_history.ends_at = work_history.starts_at + 9.hours
-        work_history.save
-
-        expect(work_history.worked_hours).to(eq(8.0))
-      end
+      it { expect(work_history.worked_hours).to(eq(work_time)) }
     end
 
-    context 'when it already exists on the same date' do
-      it 'will be invalid' do
-        work_history = create(:work_history)
-        work_history.ends_at = work_history.starts_at + 9.hours
-        work_history.save
-
-        invalid_work_history = build(:work_history, starts_at: work_history.starts_at, user_id: work_history.user_id)
-        expect(invalid_work_history).not_to(be_valid)
+    context 'when work_history has no lunch time' do
+      let(:work_history) do
+        create(
+          :work_history,
+          starts_at: starts_at,
+          ends_at: starts_at + 5.hours
+        )
       end
+
+      it { expect(work_history.worked_hours).to(eq(4)) }
     end
   end
 end
