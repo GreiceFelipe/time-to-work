@@ -11,7 +11,7 @@ module HoursControllable
 
   # Converts a worked_hours (integer) to a Time value
   def worked_hours_to_time
-    Time.at(worked_hours * 1.hour).strftime('%H:%M')
+    (Time.new.beginning_of_day + worked_hours.hours).strftime('%H:%M')
   end
 
   # validate if work_history already exists
@@ -23,6 +23,8 @@ module HoursControllable
     errors.add(:base, 'Não é permitido exitir dois ponto no mesmo dia') if work_history.ends_at.present?
   end
 
+  private
+
   # set hours default config
   def default_hours_config
     lunch_hours_config
@@ -30,7 +32,7 @@ module HoursControllable
     total_hours = (ends_at - starts_at) / 1.hour
 
     if lunch_starts.nil? && lunch_ends.nil?
-      self.worked_hours = total_hours
+      self.worked_hours = total_hours - 1.0
     else
       lunch_time = (lunch_ends - lunch_starts) / 1.hour
       self.worked_hours = total_hours - lunch_time
@@ -39,7 +41,7 @@ module HoursControllable
 
   # set lunch hours config
   def lunch_hours_config
-    self.lunch_starts = starts_at + 4.hours if lunch_starts.nil? && ends_at >= starts_at + 6.hours
+    self.lunch_starts = starts_at + 4.hours if lunch_starts.nil? && ends_at >= starts_at + 9.hours
 
     self.lunch_ends = lunch_starts + 1.hour if lunch_ends.nil? && lunch_starts.present?
   end
